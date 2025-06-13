@@ -211,18 +211,18 @@
                 const detailsList = job.details.map(detail => `<li class="text-gray-600">${detail}</li>`).join('');
 
                 itemDiv.innerHTML = `
-                    <div class="absolute top-1/2 w-4 h-4 bg-blue-500 rounded-full transform -translate-y-1/2 ${job.side === 'left' ? 'md:right-0 md:-mr-2' : 'md:left-0 md:-ml-2'} left-1/2 -ml-2 md:left-auto md:ml-auto"></div>
-                    <div class="bg-white p-6 rounded-xl shadow-lg cursor-pointer hover:shadow-xl transition-shadow duration-300">
-                        <div class="flex justify-between items-start">
+                                        <div class="absolute top-1/2 w-4 h-4 bg-blue-500 rounded-full transform -translate-y-1/2 ${job.side === 'left' ? 'md:right-0 md:-mr-2' : 'md:left-0 md:-ml-2'} left-1/2 -ml-2 md:left-auto md:ml-auto"></div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg cursor-pointer hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex justify-between items-start mb-6">
                              <div>
-                                <p class="font-bold text-lg text-gray-900">${job.role}</p>
-                                <p class="text-blue-600 font-medium">${job.company}</p>
-                                <p class="text-sm text-gray-500 mt-1">${job.date}</p>
+                                <p class="font-bold text-xl text-gray-900 mb-3">${job.role}</p>
+                                <p class="text-blue-600 font-medium text-lg mb-2">${job.company}</p>
+                                <p class="text-sm text-gray-500">${job.date}</p>
                             </div>
-                            <span class="text-blue-500 transform transition-transform duration-300">▼</span>
+                            <span class="text-blue-500 transform transition-transform duration-300 text-xl">▼</span>
                         </div>
-                        <div class="timeline-item-content mt-4">
-                            <ul class="space-y-2 list-disc list-inside">
+                        <div class="timeline-item-content mt-6">
+                            <ul class="space-y-4 list-disc list-inside">
                                 ${detailsList}
                             </ul>
                         </div>
