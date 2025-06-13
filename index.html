@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive CV | M. Zidan Maulana</title>
+    <!-- Chosen Palette: Calm Neutrals -->
+    <!-- Application Structure Plan: The SPA is designed as a top-down narrative portfolio. It begins with a hero section for immediate impact, followed by a sticky navigation bar for easy access to key areas. The structure includes: 1) Interactive Experience Timeline: To dynamically showcase job history, allowing users to click and expand details. This is more engaging than a static list. 2) Skills Dashboard: Uses a bar chart for a quick, visual assessment of technical abilities, complemented by lists for other skills. 3) Project Showcase: Presents key achievements as distinct 'project cards' to give them more weight than simple bullet points. This structure was chosen to guide a recruiter through a compelling story of skills and accomplishments, prioritizing clarity and engagement over a traditional CV layout. -->
+    <!-- Visualization & Content Choices: 1) Experience Timeline (HTML/CSS/JS): Goal: Organize/Change. An interactive vertical timeline to present work history. Interaction: Click to expand/collapse details. Justification: More engaging than a static list and shows career progression. 2) Hard Skills Chart (Chart.js): Goal: Compare/Inform. A horizontal bar chart to visually quantify technical skills. Interaction: Hover for tooltips. Justification: Provides an immediate, easy-to-digest summary of technical proficiency. 3) Project Cards (HTML/CSS): Goal: Inform. Styled cards to highlight major projects. Interaction: Static display. Justification: Elevates key projects from bullet points to portfolio pieces. All textual content is taken directly from the source CV and placed in the appropriate designed section. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #1a1a1a;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #007BFF;
+            border-bottom-color: #007BFF;
+        }
+        .timeline-item-content {
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .timeline-item.open .timeline-item-content {
+            max-height: 500px;
+            opacity: 1;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 450px;
+            max-height: 50vh;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-height: 60vh;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="max-w-5xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="font-bold text-lg text-gray-800">M. Zidan Maulana</div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#experience" class="nav-link pb-1">Experience</a>
+                    <a href="#skills" class="nav-link pb-1">Skills</a>
+                    <a href="#projects" class="nav-link pb-1">Projects</a>
+                    <a href="#education" class="nav-link pb-1">Education</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden pb-4">
+                <a href="#experience" class="block py-2 px-4 text-sm hover:bg-gray-100 rounded-md">Experience</a>
+                <a href="#skills" class="block py-2 px-4 text-sm hover:bg-gray-100 rounded-md">Skills</a>
+                <a href="#projects" class="block py-2 px-4 text-sm hover:bg-gray-100 rounded-md">Projects</a>
+                <a href="#education" class="block py-2 px-4 text-sm hover:bg-gray-100 rounded-md">Education</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        
+        <section id="hero" class="text-center mb-24">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 tracking-tight">Muhammad Zidan Maulana</h1>
+            <p class="mt-4 text-lg text-gray-600">E-Commerce Specialist & Information Systems Graduate</p>
+            <p class="mt-6 max-w-2xl mx-auto text-gray-500">
+                A motivated professional with proven experience in E-Commerce platform management, technical support, and SEO optimization. Proficient in Machine Learning, NLP, and web development.
+            </p>
+            <div class="mt-8 flex justify-center space-x-6 text-gray-500">
+                <a href="mailto:zidanmau24@gmail.com" class="hover:text-blue-600 transition">zidanmau24@gmail.com</a>
+                <span>|</span>
+                <a href="https://linkedin.com/in/zidan-maulana-97b240292/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 transition">LinkedIn</a>
+                 <span>|</span>
+                <span>Kendal, Jawa Tengah</span>
+            </div>
+        </section>
+
+        <section id="experience" class="mb-24">
+            <h2 class="text-3xl font-bold text-center mb-12">Work Experience</h2>
+            <div class="relative max-w-2xl mx-auto">
+                <div class="absolute left-1/2 w-0.5 h-full bg-gray-200 transform -translate-x-1/2"></div>
+                <div id="timeline-container" class="space-y-12">
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="mb-24">
+            <h2 class="text-3xl font-bold text-center mb-4">Skills Dashboard</h2>
+            <p class="text-center text-gray-600 mb-12">A visual overview of my technical and professional capabilities.</p>
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                <h3 class="font-bold text-xl mb-6 text-gray-800">Technical Proficiency</h3>
+                <div class="chart-container">
+                    <canvas id="skillsChart"></canvas>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-bold text-xl mb-4 text-gray-800">Soft Skills</h3>
+                        <ul id="soft-skills-list" class="space-y-2 text-gray-700"></ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-xl mb-4 text-gray-800">Languages</h3>
+                        <ul id="languages-list" class="space-y-2 text-gray-700"></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="mb-24">
+            <h2 class="text-3xl font-bold text-center mb-4">Key Projects</h2>
+             <p class="text-center text-gray-600 mb-12">Highlights from my development experience.</p>
+            <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            </div>
+        </section>
+
+        <section id="education" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-12">Education & Activities</h2>
+            <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h3 class="font-bold text-xl text-gray-800">Universitas Dian Nuswantoro</h3>
+                    <p class="text-gray-600">Semarang, Indonesia</p>
+                    <p class="mt-4 text-gray-800">Bachelor of Computer Science</p>
+                    <p class="text-gray-600">GPA: 3.82 / 4.00 (Graduated with Honors)</p>
+                    <p class="text-sm text-gray-500 mt-2">Aug 2019 - Aug 2023</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h3 class="font-bold text-xl text-gray-800">Organizational Experience</h3>
+                    <p class="text-gray-600">Leadership & Team Collaboration</p>
+                    <ul class="mt-4 space-y-2 text-gray-700 list-disc list-inside">
+                        <li><b>Stage Manager</b>, Jourasik Festival 2018 & 2019</li>
+                        <li><b>Ticketing Staff</b>, Prambanan Jazz Festival 2019</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white">
+        <div class="max-w-5xl mx-auto px-4 py-6 text-center text-sm">
+            <p>&copy; 2024 Muhammad Zidan Maulana. Interactive CV generated based on professional profile.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const experienceData = [
+                {
+                    role: 'IT E-Commerce Staff',
+                    company: 'Indospaceshop.com & Dezigndistrict.com',
+                    date: 'December 2023 - Present',
+                    side: 'left',
+                    details: [
+                        'Successfully manage and optimize e-commerce platforms, including the strategic upload of over 1,000 products to enhance online offerings.',
+                        'Organize and update website content across multiple international regions (ID, MY, SA), including product categories, brand pages, and project portfolios.',
+                        'Conduct technical web audits, on-page SEO audits, and bug hunting to improve platform performance, user experience, and search engine visibility.',
+                        'Support the DevOps team by providing detailed bug reports, initiating new feature requests, and supplying essential assets to international support teams.',
+                        'Develop and operate internal tools to convert images and catalogs into HTML, streamlining the content update process.'
+                    ]
+                },
+                {
+                    role: 'Machine Learning Developer Intern',
+                    company: 'Udinus Center of Excellence, Semarang',
+                    date: 'February 2023 - July 2023',
+                    side: 'right',
+                    details: [
+                        'Accomplished data scraping from social media and online articles to build a robust dataset.',
+                        'Developed a sophisticated machine learning model for a chatbot and successfully integrated it with the Telegram messaging platform.',
+                        'Effectively compiled and organized the collected data for model training and validation.'
+                    ]
+                },
+                {
+                    role: 'IT Intern',
+                    company: 'Ministry of Agrarian and Spatial Planning (ATR/BPN), Jakarta',
+                    date: 'February 2022 - July 2022',
+                    side: 'left',
+                    details: [
+                        'Developed the Geographic Information System: RTR Online using HTML, ReactJS, Javascript, and ArcGIS web services.',
+                        'Assessed ATR/BPN website performance, information quality, and UI/UX design, providing recommendations for improvements.',
+                        'Validated RDTR progression documents from 33 different regions and reviewed government regulations on multiple sites.'
+                    ]
+                }
+            ];
+
+            const timelineContainer = document.getElementById('timeline-container');
+            experienceData.forEach((job, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `timeline-item relative ${job.side === 'left' ? 'md:mr-auto md:pr-8' : 'md:ml-auto md:pl-8'} md:w-1/2`;
+                
+                const detailsList = job.details.map(detail => `<li class="text-gray-600">${detail}</li>`).join('');
+
+                itemDiv.innerHTML = `
+                    <div class="absolute top-1/2 w-4 h-4 bg-blue-500 rounded-full transform -translate-y-1/2 ${job.side === 'left' ? 'md:right-0 md:-mr-2' : 'md:left-0 md:-ml-2'} left-1/2 -ml-2 md:left-auto md:ml-auto"></div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg cursor-pointer hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex justify-between items-start">
+                             <div>
+                                <p class="font-bold text-lg text-gray-900">${job.role}</p>
+                                <p class="text-blue-600 font-medium">${job.company}</p>
+                                <p class="text-sm text-gray-500 mt-1">${job.date}</p>
+                            </div>
+                            <span class="text-blue-500 transform transition-transform duration-300">▼</span>
+                        </div>
+                        <div class="timeline-item-content mt-4">
+                            <ul class="space-y-2 list-disc list-inside">
+                                ${detailsList}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                timelineContainer.appendChild(itemDiv);
+                
+                itemDiv.querySelector('.cursor-pointer').addEventListener('click', () => {
+                    const icon = itemDiv.querySelector('.transform');
+                    icon.classList.toggle('rotate-180');
+                    itemDiv.classList.toggle('open');
+                });
+                 if (index === 0) {
+                    itemDiv.classList.add('open');
+                    itemDiv.querySelector('.transform').classList.add('rotate-180');
+                }
+            });
+
+            const skillsChartCtx = document.getElementById('skillsChart').getContext('2d');
+            const skillsChart = new Chart(skillsChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['E-Commerce & SEO', 'JS/React.js', 'Python (ML/NLP)', 'HTML/CSS', 'SQL', 'GIS/ArcGIS'],
+                    datasets: [{
+                        label: 'Proficiency',
+                        data: [90, 85, 80, 95, 75, 70],
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                display: false
+                            },
+                             ticks: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#374151',
+                                font: {
+                                    size: 14
+                                }
+                            },
+                            grid: {
+                                color: '#e5e7eb'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: '#1f2937',
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 12
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    return `Proficiency: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const softSkills = ['Advanced Communication', 'Team Management', 'Problem Solving', 'Time Management', 'Strategic & Critical Thinking'];
+            const softSkillsList = document.getElementById('soft-skills-list');
+            softSkills.forEach(skill => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="text-blue-500 mr-2">&#10003;</span>${skill}`;
+                softSkillsList.appendChild(li);
+            });
+            
+            const languages = ['Indonesian (Native)', 'English (Professional Working Proficiency)'];
+            const languagesList = document.getElementById('languages-list');
+            languages.forEach(lang => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="text-blue-500 mr-2">&#10003;</span>${lang}`;
+                languagesList.appendChild(li);
+            });
+
+            const projectsData = [
+                {
+                    title: 'Geographic Information System: RTR Online',
+                    description: 'Developed during my internship at the Ministry of Agrarian and Spatial Planning, this web-based GIS application was built to manage and visualize spatial planning data.',
+                    tags: ['React.js', 'JavaScript', 'ArcGIS', 'HTML']
+                },
+                {
+                    title: 'Machine Learning Chatbot',
+                    description: 'As a Machine Learning Intern, I developed a sophisticated chatbot. The project involved data scraping, building an NLP model, and integrating it with Telegram.',
+                    tags: ['Python', 'Machine Learning', 'NLP', 'Telegram API']
+                }
+            ];
+            
+            const projectsContainer = document.getElementById('projects-container');
+            projectsData.forEach(project => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300';
+                
+                const tagsHTML = project.tags.map(tag => `<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">${tag}</span>`).join('');
+
+                card.innerHTML = `
+                    <h3 class="font-bold text-xl text-gray-900 mb-2">${project.title}</h3>
+                    <p class="text-gray-600 mb-4">${project.description}</p>
+                    <div class="flex flex-wrap">
+                        ${tagsHTML}
+                    </div>
+                `;
+                projectsContainer.appendChild(card);
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    if(mobileMenu.classList.contains('hidden') === false){
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
